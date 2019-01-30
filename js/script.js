@@ -1,5 +1,6 @@
 function searchMovie() {
     $('#movie-list').html('');
+
     $.ajax({
         url: 'http://omdbapi.com',
         type: 'get',
@@ -8,7 +9,7 @@ function searchMovie() {
             'apikey': 'dca61bcc',
             's': $('#search-input').val()
         },
-        succcess: function (result) {
+        success: function (result) {
             if (result.Response == "True") {
                 let movies = result.Search;
 
@@ -20,7 +21,7 @@ function searchMovie() {
                             <div class = "card-body" >
                                 <h5 class="card-title">` + data.Title + `</h5> 
                                 <h6 class="card-subtitle mb-2 text-muted">` + data.Year + `</h6>
-                                < a href="#" class="card-link see-detail" data-toggle="modal" data-target="#exampleModal" data-id="` + data.imdbID + `">See Detail</a>
+                                <a href="#" class="card-link see-detail" data-toggle="modal" data-target="#exampleModal" data-id="` + data.imdbID + `">See Detail</a>
                             </div> 
                         </div>
                     </div>
@@ -49,14 +50,39 @@ $('#search-input').on('keyup', function (e) {
     }
 });
 
-$('.see-detail').on('click', function () {
+$('#movie-list').on('click', '.see-detail', function () {
+
     $ajax({
         url: 'http://omdbapi.com',
         dataType: 'json',
         type: 'get',
         data: {
             'apikey': 'dca61bcc',
-            'i': $(this).data('id');
+            'i': $(this).data('id')
+        },
+        success: function (movie) {
+            if (movie.Response === "True") {
+
+                $('#modal-body').html(`
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="` + movie.Poster + `" class="img-fluid">
+                            </div>
+                            <div class="col-md-8">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><h3>` + movie.Title + `</h3></li> 
+                                    <li class="list-group-item">Released : ` + movie.Response + `</li> 
+                                    <li class="list-group-item">Genre : ` + movie.Genre + `</li> 
+                                    <li class="list-group-item">Director : ` + movie.Director + `</li> 
+                                    <li class="list-group-item">Artors : ` + movie.artors + `</li> 
+                                </ul> 
+                            </div>
+                        </div>
+                    </div>
+                `);
+            }
         }
+
     });
 });
