@@ -63,7 +63,7 @@ $('#movie-list').on('click', '.see-detail', function () {
         success: function (movie) {
             if (movie.Response === "True") {
 
-                $('#modal-body').html(`
+                $('.modal-body').html(`
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-4">
